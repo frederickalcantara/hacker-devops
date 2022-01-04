@@ -1,0 +1,6 @@
+- name: Install Roles
+  gather_facts: yes
+  hosts: all
+  connection: ssh
+  roles:
+  - { role: docker }

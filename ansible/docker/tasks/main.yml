@@ -1,0 +1,46 @@
+---
+###############################################################################
+#
+# This will install the latest Docker CE (if it was not already installed)
+#
+###############################################################################
+
+- name: Install dependencies for Docker 
+  apt:
+    pkg: 
+    - ca-certificates
+    - curl
+    - gnupg
+    - lsb-release
+    update_cache: yes
+    state: present
+  changed_when: false
+  when: ansible_distribution == "Ubuntu"
+
+- name: Get GPG Key from Docker and add it OS
+  apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    state: present
+  when: ansible_distribution == "Ubuntu"
+
+- name: Add Docker APT Repository
+  apt_repository:
+    repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
+    state: present
+  when: ansible_distribution == "Ubuntu"
+
+- name: Install Docker Engine Dependencies & containerd
+  apt:
+    pkg:
+    - docker-ce
+    - docker-ce-cli
+    - containerd.io
+    update_cache: yes
+    state: present
+
+- name: Create the Docker group
+  group: 
+    name: docker
+    state: present
+
+# - name: Add users to 
