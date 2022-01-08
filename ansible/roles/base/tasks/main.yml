@@ -1,0 +1,10 @@
+---
+
+  - name: Generate sshd_config file from template
+    template:
+      src: "{{ ssh_template_file }}"
+      dest: /etc/ssh/ssh_config
+      owner: root
+      group: root
+      mode: 0644
+    notify: restart_sshd

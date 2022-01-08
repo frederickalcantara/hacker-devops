@@ -43,4 +43,15 @@
     name: docker
     state: present
 
-# - name: Add users to 
+- name: Add users to the group Docker 
+  user:
+    name: "{{ item.username }}"
+    groups: docker
+    append: yes
+  loop: "{{ users|flatten(levels=1) }}"
+
+- name: Install docker-compose 
+  get_url:
+    url: "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-Linux-x86_64"
+    dest: "/usr/local/bin/docker-compose"
+    mode: "u+x, g+x"

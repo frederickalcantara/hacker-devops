@@ -1,2 +1,32 @@
-[haxor]
-45.79.212.246
+all: 
+  hosts:
+    haxor:
+      ansible_host: "170.187.152.224"
+      hostname: "haxor"
+
+      ansible_python_interpreter: "/usr/bin/python3"
+      ansible_ssh_private_key_file: "/home/freddyal/.ssh/devops"
+      ansible_user: "ansible"
+
+      ssh_template_file: sshd_config_ubuntu.j2
+
+      users:
+        - username: freddyal
+          name: Freddy Al
+          password: "$6$osL2goDcFQnXOyaL$bfCzoL5XFv5rTN4uCLplv0qqnpCPyzVz80iiZ9PRI5ExJSwPGgism45W70sPXfSTpa.CTMy.TSxitL/LL4eu20"
+          authorized_keys:
+            - "{{ lookup('file', '/home/freddyal/.ssh/id_ed25519.pub') }}"
+          users_home_create: yes
+          users_group: ["sudo"]
+          append: yes
+          home_mode: "0750"
+          shell: "/bin/bash"
+      
+      users_authorized_keys_exclusive: yes
+
+      pip_install_packages:
+        - name: docker
+      pip_package: python3-pip
+      pip_executable: pip3
+
+      ntp_timezone: "America/New_York"
