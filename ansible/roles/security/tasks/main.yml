@@ -1,0 +1,59 @@
+---
+
+  - name: Generate sshd_config file from template
+    template:
+      src: "{{ ssh_template_file }}"
+      dest: /etc/ssh/ssh_config
+      owner: root
+      group: root
+      mode: 0644
+    notify: restart_sshd
+    changed_when: false
+
+  - name: Enable UFW
+    community.general.ufw:
+      state: enabled
+    changed_when: false
+
+  - name: Allow all outgoing traffic (default policy)
+    community.general.ufw:
+      policy: allow
+      direction: outgoing
+
+  - name: Allow all TCP outgoing traffic
+    community.general.ufw:
+      rule: allow
+      proto: tcp
+      direction: out
+
+  - name: Allow all UDP outgoing traffic
+    community.general.ufw:
+      rule: allow
+      proto: udp
+      direction: out
+  
+  - name: Deny all incoming traffic (default policy)
+    community.general.ufw:
+      policy: deny
+      direction: incoming
+  
+  - name: Allow TCP port 22 incoming trafic
+    community.general.ufw:
+      rule: allow
+      proto: tcp
+      port: '22'
+      direction: in
+
+  - name: Allow TCP port 80 incoming trafic
+    community.general.ufw:
+      rule: allow
+      proto: tcp
+      port: '80'
+      direction: in
+
+  - name: Allow TCP port 443 incoming trafic
+    community.general.ufw:
+      rule: allow
+      proto: tcp
+      port: '443'
+      direction: in
