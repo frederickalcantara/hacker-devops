@@ -7,4 +7,4 @@
       
   - name: set as default locale
     command: localectl set-locale LANG=en_US.UTF-8
-    changed_when: false
+    changed_when: true
