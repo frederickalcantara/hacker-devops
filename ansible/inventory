@@ -10,6 +10,7 @@ all:
 
       ssh_template_file: sshd_config_ubuntu.j2
 
+      # Create Users
       users:
         - username: freddyal
           name: Freddy Al
@@ -34,9 +35,15 @@ all:
       
       users_authorized_keys_exclusive: yes
 
+      # Docker Settings
+      dockernet: "docker"
+      docker_home_dir: "/opt/docker"
+
+      #Pip Settings
       pip_install_packages:
         - name: docker
       pip_package: python3-pip
       pip_executable: pip3
 
+      # NTP
       ntp_timezone: "America/New_York"

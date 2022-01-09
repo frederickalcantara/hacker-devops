@@ -5,6 +5,18 @@
 #
 ###############################################################################
 
+- name: Determine if Docker was already installed
+  command: which docker
+  register: docker_cmd_available
+  ignore_errors: yes
+  changed_when: false
+
+- name: Set the fact docker_installed
+  set_fact:
+    docker_installed={{ docker_cmd_available.rc == 0 }}
+  when: docker_cmd_available is defined and docker_cmd_available.rc is defined
+  changed_when: false
+
 - name: Install dependencies for Docker 
   apt:
     pkg: 
@@ -55,3 +67,15 @@
     url: "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-Linux-x86_64"
     dest: "/usr/local/bin/docker-compose"
     mode: "a+x"
+
+- name: Container internal network
+  community.docker.docker_network: 
+    name: "{{ dockernet }}"
+    attachable: "yes"
+    ipam_config:
+      - subnet: 172.23.27.0/24
+        gateway: 172.23.27.2
+        iprange: 172.23.27.0/26
+        aux_addresses:
+          host1: 172.23.27.3
+          host2: 172.23.27.4
