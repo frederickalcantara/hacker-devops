@@ -1,0 +1,4 @@
+---
+- include_tasks: install.yml
+- include_tasks: c2_profile.yml
+- include_tasks: payloads.yml 

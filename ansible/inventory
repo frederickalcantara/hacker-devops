@@ -48,3 +48,16 @@ all:
 
       # NTP
       ntp_timezone: "America/New_York"
+
+      # Mythic C2
+      allowed_ip_blocks: 0.0.0.0/0
+      compose_project_name: mythic
+      default_operation_name: operation chimera
+      hasura_secret: MLu9w8Kh4nuw7jphNdk2DktdBRyHVd
+      mythic_jwt_secret: MLu9w8Kh4nuw7jphNdk2DktdBRyHVd
+      postgres_password: MLu9w8Kh4nuw7jphNdk2DktdBRyHVd
+      rabbitmq_password: MLu9w8Kh4nuw7jphNdk2DktdBRyHVd
+      mythic_admin_password: mythic_password
+      mythic_admin_user: mythic_admin
+
+      key_output_path: "{{ mythic_dir }}/nginx/ssl"
