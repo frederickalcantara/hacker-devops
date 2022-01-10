@@ -27,19 +27,19 @@
     update_cache: yes
     state: present
   changed_when: false
-  when: ansible_distribution == "Ubuntu"
+  when: not docker_installed
 
 - name: Get GPG Key from Docker and add it OS
   apt_key:
     url: https://download.docker.com/linux/ubuntu/gpg
     state: present
-  when: ansible_distribution == "Ubuntu"
+  when: not docker_installed and ansible_distribution == "Ubuntu"
 
 - name: Add Docker APT Repository
   apt_repository:
     repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
     state: present
-  when: ansible_distribution == "Ubuntu"
+  when: not docker_installed and ansible_distribution == "Ubuntu"
 
 - name: Install Docker Engine Dependencies & containerd
   apt:
@@ -48,6 +48,13 @@
     - docker-ce-cli
     - containerd.io
     update_cache: yes
+    state: present
+  when: not docker_installed
+
+- name: Install Docker Compose
+  apt:
+    name: docker-compose
+    update_cache: true
     state: present
 
 - name: Create the Docker group
@@ -61,12 +68,6 @@
     groups: docker
     append: yes
   loop: "{{ users|flatten(levels=1) }}"
-
-- name: Install docker-compose 
-  get_url:
-    url: https://github.com/docker/compose/releases/download/1.29.2/docker-compose-Linux-x86_64
-    dest: /usr/local/bin/docker-compose
-    mode: "0755"
 
 - name: Container internal network
   community.docker.docker_network: 

@@ -10,3 +10,5 @@
   - { role: security }
   - { role: docker }
   - { role: os }
+  - { role: akin_ozer.ansible_role_ssl, server_hostname: devop.com }
+  - { role: mythic-c2-docker, server_hostname: devop.com }
